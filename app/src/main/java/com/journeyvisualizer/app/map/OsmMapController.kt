@@ -67,7 +67,7 @@ class OsmMapController(private val appContext: Context) : InteractiveMapControll
     private var lastFollowMs: Long = 0L
 
     // -- Phase 6 video composition ----------------------------------------
-    private var followViewportFraction: Float = FOLLOW_VIEWPORT_FRACTION
+    private var followViewportFraction: Float = FOLLOW_VIEWPORT_FRACTION.toFloat()
     private var followThrottleMs: Long = FOLLOW_THROTTLE_MS
     private var animatedMarkerStyle: VideoMarkerStyle = VideoMarkerStyle.STANDARD
     private var animatedMarkerIconStyle: VideoMarkerStyle? = null
@@ -701,14 +701,14 @@ class OsmMapController(private val appContext: Context) : InteractiveMapControll
         /** Recenter when the marker leaves this fraction of the viewport height. */
         private const val FOLLOW_VIEWPORT_FRACTION = 0.25
 
-        private const val ROUTE_COLOR = 0xFF16A34A // brand green
-        private const val ROUTE_COLOR_DIM = 0x6616A34A // faint green (progressive mode)
-        private const val TRAVELED_COLOR = 0xFF15803D // emphasized traveled portion
-        private const val ANIMATED_COLOR = 0xFF2563EB // blue "you are here" marker
-        private const val POINT_COLOR = 0xFF16A34A
-        private const val CLUSTER_COLOR = 0xFF15803D
-        private const val START_COLOR = 0xFF16A34A
-        private const val END_COLOR = 0xFFDC2626
+        private val ROUTE_COLOR = 0xFF16A34A.toInt() // brand green
+        private val ROUTE_COLOR_DIM = 0x6616A34A.toInt() // faint green (progressive mode)
+        private val TRAVELED_COLOR = 0xFF15803D.toInt() // emphasized traveled portion
+        private val ANIMATED_COLOR = 0xFF2563EB.toInt() // blue "you are here" marker
+        private val POINT_COLOR = 0xFF16A34A.toInt()
+        private val CLUSTER_COLOR = 0xFF15803D.toInt()
+        private val START_COLOR = 0xFF16A34A.toInt()
+        private val END_COLOR = 0xFFDC2626.toInt()
         private const val HIGHLIGHT_COLOR = -0x1 // 0xFFFFFFFF as Int
     }
 }

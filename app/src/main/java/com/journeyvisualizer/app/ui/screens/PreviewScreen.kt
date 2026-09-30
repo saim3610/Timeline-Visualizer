@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowLeft
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
@@ -35,6 +35,7 @@ import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -68,7 +69,7 @@ fun PreviewScreen(viewModel: JourneyViewModel, onBack: () -> Unit) {
             ) {
                 IconButton(onClick = onBack) {
                     Icon(
-                        Icons.Filled.ArrowBack,
+                        Icons.AutoMirrored.Filled.ArrowLeft,
                         contentDescription = stringResource(R.string.cd_back)
                     )
                 }
@@ -159,7 +160,7 @@ fun PreviewScreen(viewModel: JourneyViewModel, onBack: () -> Unit) {
                 .padding(8.dp),
         ) {
             Icon(
-                Icons.Filled.ArrowBack,
+                Icons.AutoMirrored.Filled.ArrowLeft,
                 contentDescription = stringResource(R.string.cd_back),
                 tint = Color.White
             )

@@ -69,6 +69,7 @@ import com.journeyvisualizer.app.composition.OverlayTextSize
 import com.journeyvisualizer.app.composition.OverlayTextWeight
 import com.journeyvisualizer.app.composition.VideoAspectRatio
 import com.journeyvisualizer.app.composition.VideoComposition
+import com.journeyvisualizer.app.composition.toExportSpec
 import com.journeyvisualizer.app.composition.VideoDurationMode
 import com.journeyvisualizer.app.composition.VideoFps
 import com.journeyvisualizer.app.composition.VideoPreviewController

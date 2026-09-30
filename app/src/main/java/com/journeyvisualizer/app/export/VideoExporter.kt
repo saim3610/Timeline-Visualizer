@@ -498,7 +498,7 @@ class VideoExporter(private val context: Context) {
                 canvas, config.width, config.height,
                 engine, videoTime, durationD,
                 config.cameraMode,
-                tileCache::getTile,
+                { key -> tileCache.getTile(key.z, key.x, key.y) },
                 config.title, ACCENT,
                 config.cities,
             )

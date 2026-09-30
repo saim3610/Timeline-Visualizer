@@ -129,7 +129,7 @@ fun JVTopBar(
             if (onBack != null) {
                 androidx.compose.material3.IconButton(onClick = onBack) {
                     Icon(
-                        imageVector = androidx.compose.material.icons.Icons.AutoMirrored.Filled.ArrowBack,
+                        imageVector = androidx.compose.material.icons.Icons.AutoMirrored.Filled.ArrowLeft,
                         contentDescription = null,
                     )
                 }

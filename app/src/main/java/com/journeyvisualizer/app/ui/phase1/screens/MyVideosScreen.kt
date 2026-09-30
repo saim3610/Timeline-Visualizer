@@ -398,7 +398,7 @@ private fun VideoCard(
                             enabled = !isDeleting,
                         ) {
                             Icon(
-                                imageVector = androidx.compose.material.icons.Icons.Filled.MoreVert,
+                                imageVector = androidx.compose.material.icons.Icons.Filled.MoreHoriz,
                                 contentDescription = stringResource(R.string.history_card_options),
                             )
                         }

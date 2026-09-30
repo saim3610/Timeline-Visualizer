@@ -15,6 +15,7 @@ import com.journeyvisualizer.app.animation.AnimationTimeline
 import com.journeyvisualizer.app.composition.CompositionCodec
 import com.journeyvisualizer.app.composition.CompositionValidator
 import com.journeyvisualizer.app.composition.VideoComposition
+import com.journeyvisualizer.app.composition.toExportSpec
 import com.journeyvisualizer.app.composition.VideoPreviewController
 import com.journeyvisualizer.app.export.Phase7RenderRequest
 import com.journeyvisualizer.app.data.FailureReason

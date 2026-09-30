@@ -19,7 +19,7 @@ fun <T> OptionDropdown(
     label: String,
     options: List<T>,
     selected: T,
-    labelOf: (T) -> String,
+    labelOf: @Composable (T) -> String,
     onSelect: (T) -> Unit,
     modifier: Modifier = Modifier,
 ) {

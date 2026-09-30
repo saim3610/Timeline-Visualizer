@@ -59,8 +59,8 @@ class HistoryRepository(
      */
     suspend fun rename(id: String, newName: String): RenameValidator.Result =
         withContext(Dispatchers.IO) {
-            val entity = dao.getVideoById(id) ?: return@withContext
-                RenameValidator.Result.Invalid("Video not found.")
+            val entity = dao.getVideoById(id)
+                ?: return@withContext RenameValidator.Result.Invalid("Video not found.")
             val others = dao.getAllVideos()
                 .filter { it.id != id }
                 .map { it.displayName }

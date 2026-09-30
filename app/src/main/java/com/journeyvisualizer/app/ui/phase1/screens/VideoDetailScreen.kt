@@ -118,7 +118,7 @@ fun VideoDetailScreen(
             VideoPlayer(
                 uri = Uri.parse(video.contentUri),
                 modifier = Modifier.aspectRatio(
-                    video.width.toFloat() / video.height.toFloat().coerceAtLeast(1),
+                    video.width.toFloat() / video.height.toFloat().coerceAtLeast(1f),
                 ),
             )
 

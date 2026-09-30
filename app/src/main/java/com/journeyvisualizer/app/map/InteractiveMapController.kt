@@ -1,5 +1,7 @@
 package com.journeyvisualizer.app.map
 
+import org.osmdroid.views.MapView
+
 /**
  * UI-agnostic control surface for the interactive timeline map (Phase 4).
  *
@@ -106,6 +108,12 @@ interface InteractiveMapController {
 
     /** Release the MapView. After this the controller accepts a new attach. */
     fun detach()
+
+    /**
+     * Bind to a MapView (call from the AndroidView factory). Safe to call
+     * again after [detach] with a new view.
+     */
+    fun attach(view: MapView)
 
     /**
      * Forward the host lifecycle so tile loading pauses/resumes correctly.
