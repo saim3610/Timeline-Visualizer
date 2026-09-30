@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.SystemClock
 import android.view.MotionEvent
+import android.view.View
 import kotlin.math.cos
 import kotlin.math.floor
 import kotlin.math.pow
@@ -208,6 +209,28 @@ class OsmMapController(private val appContext: Context) : InteractiveMapControll
         val view = mapView
         if (view == null) {
             pendingFit = true
+            return
+        }
+        // osmdroid's zoomToBoundingBox hangs the calling thread forever when
+        // the view has no size yet: a 0x0 view yields a NaN zoom, NaN
+        // propagates into the Projection's mercator map size, and
+        // Projection.getCloserPixel then spins forever (x -= NaN leaves x
+        // unchanged, so the loop condition never flips). view.post() does NOT
+        // guarantee layout — the factory-built MapView typically hasn't been
+        // measured on the first setRoute — so wait for layout explicitly
+        // instead of freezing the main thread.
+        if (view.width <= 0 || view.height <= 0) {
+            view.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
+                override fun onLayoutChange(
+                    v: View,
+                    left: Int, top: Int, right: Int, bottom: Int,
+                    oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int,
+                ) {
+                    v.removeOnLayoutChangeListener(this)
+                    // The controller may have detached or rebound since.
+                    if (mapView === v) fitTimelineBounds(animated)
+                }
+            })
             return
         }
         val bounds = MapDataMapper.boundsOf(points) ?: return
