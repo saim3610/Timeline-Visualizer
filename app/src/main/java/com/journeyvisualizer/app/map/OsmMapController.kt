@@ -18,7 +18,6 @@ import org.osmdroid.events.ScrollEvent
 import org.osmdroid.events.ZoomEvent
 import org.osmdroid.tileprovider.MapTileProviderBasic
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
-import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.util.MapTileIndex
 import org.osmdroid.views.MapView
@@ -48,6 +47,7 @@ class OsmMapController(private val appContext: Context) : InteractiveMapControll
     private var selectedIndex: Int? = null
     private var markerListener: ((Int) -> Unit)? = null
     private var pendingFit = false
+    private var fitDeferred = false
 
     private var routeLine: Polyline? = null
     private var labelOverlay: TilesOverlay? = null
@@ -121,7 +121,7 @@ class OsmMapController(private val appContext: Context) : InteractiveMapControll
         }
         if (pendingFit) {
             pendingFit = false
-            // zoomToBoundingBox needs a laid-out view; post it.
+            // The fit itself waits for layout when the view is too small.
             view.post { fitTimelineBounds(animated = false) }
         }
     }
@@ -131,6 +131,7 @@ class OsmMapController(private val appContext: Context) : InteractiveMapControll
         view?.removeMapListener(zoomListener)
         view?.setOnTouchListener(null)
         mapView = null
+        fitDeferred = false
     }
 
     override fun onResumeView() {
@@ -211,39 +212,56 @@ class OsmMapController(private val appContext: Context) : InteractiveMapControll
             pendingFit = true
             return
         }
-        // osmdroid's zoomToBoundingBox hangs the calling thread forever when
-        // the view has no size yet: a 0x0 view yields a NaN zoom, NaN
-        // propagates into the Projection's mercator map size, and
-        // Projection.getCloserPixel then spins forever (x -= NaN leaves x
-        // unchanged, so the loop condition never flips). view.post() does NOT
-        // guarantee layout — the factory-built MapView typically hasn't been
-        // measured on the first setRoute — so wait for layout explicitly
-        // instead of freezing the main thread.
-        if (view.width <= 0 || view.height <= 0) {
-            view.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
-                override fun onLayoutChange(
-                    v: View,
-                    left: Int, top: Int, right: Int, bottom: Int,
-                    oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int,
-                ) {
-                    v.removeOnLayoutChangeListener(this)
-                    // The controller may have detached or rebound since.
-                    if (mapView === v) fitTimelineBounds(animated)
-                }
-            })
-            return
-        }
         val bounds = MapDataMapper.boundsOf(points) ?: return
         if (bounds.minLat == bounds.maxLat && bounds.minLng == bounds.maxLng) {
+            // Single point: center + fixed zoom needs no projection math,
+            // so it is safe even before layout.
             view.controller.setCenter(GeoPoint(bounds.centerLat, bounds.centerLng))
             view.controller.setZoom(SINGLE_POINT_ZOOM)
-        } else {
-            val box = BoundingBox(
-                bounds.maxLat, bounds.maxLng,
-                bounds.minLat, bounds.minLng,
-            )
-            view.zoomToBoundingBox(box, animated, fitBorderPx())
+            return
         }
+        // Never call MapView.zoomToBoundingBox: when the view is not larger
+        // than the fit borders (zero-size on first layout, or merely small)
+        // it derives a NaN zoom and osmdroid's Projection.getCloserPixel then
+        // loops forever on the main thread (two ANRs confirmed 2026-10-01).
+        // MapFit replicates only the zoom computation with every degenerate
+        // input normalized; setZoom/setCenter/animateTo perform no projection
+        // math and cannot hang.
+        val fit = MapFit.fitForBounds(
+            bounds,
+            view.width, view.height,
+            fitBorderPx(),
+            view.minZoomLevel, view.maxZoomLevel,
+        )
+        if (fit == null) {
+            deferFitUntilLayout(view, animated)
+            return
+        }
+        val center = GeoPoint(fit.centerLat, fit.centerLng)
+        if (animated) {
+            view.controller.animateTo(center, fit.zoom, null)
+        } else {
+            view.controller.setZoom(fit.zoom)
+            view.controller.setCenter(center)
+        }
+    }
+
+    /** Retries the bounds fit once the view has been laid out (one-shot). */
+    private fun deferFitUntilLayout(view: MapView, animated: Boolean) {
+        if (fitDeferred) return
+        fitDeferred = true
+        view.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
+            override fun onLayoutChange(
+                v: View,
+                left: Int, top: Int, right: Int, bottom: Int,
+                oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int,
+            ) {
+                v.removeOnLayoutChangeListener(this)
+                fitDeferred = false
+                // The controller may have detached or rebound since.
+                if (mapView === v) fitTimelineBounds(animated)
+            }
+        })
     }
 
     override fun getCurrentCameraState(): MapCameraState {
