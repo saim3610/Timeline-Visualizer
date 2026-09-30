@@ -136,7 +136,7 @@ class ExportService : Service() {
         if (Build.VERSION.SDK_INT >= 29) {
             startForeground(
                 PROGRESS_ID, notif,
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROCESSING
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
             )
         } else {
             @Suppress("DEPRECATION")
@@ -204,7 +204,7 @@ class ExportService : Service() {
         if (Build.VERSION.SDK_INT >= 29) {
             startForeground(
                 PROGRESS_ID, notif,
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROCESSING
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
             )
         } else {
             @Suppress("DEPRECATION")

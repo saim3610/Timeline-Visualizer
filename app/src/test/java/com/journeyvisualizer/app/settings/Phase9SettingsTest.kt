@@ -269,8 +269,9 @@ class Phase9SettingsTest {
     @Test fun `manifest only declares the audited permission set`() {
         val allowed = setOf(
             "android.permission.INTERNET", // map tile downloads only
+            "android.permission.ACCESS_NETWORK_STATE", // offline detection, no crash
             "android.permission.FOREGROUND_SERVICE",
-            "android.permission.FOREGROUND_SERVICE_MEDIA_PROCESSING", // Phase 7 export
+            "android.permission.FOREGROUND_SERVICE_DATA_SYNC", // Phase 7 export
             "android.permission.POST_NOTIFICATIONS", // export progress
         )
         val declared = manifestPermissions()
