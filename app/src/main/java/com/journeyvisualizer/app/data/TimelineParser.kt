@@ -8,6 +8,7 @@ import org.json.JSONObject
 import java.io.InputStream
 import java.time.Instant
 import java.time.OffsetDateTime
+import kotlin.math.abs
 
 data class ParseResult(
     val journey: Journey?,
@@ -149,13 +150,21 @@ object TimelineParser {
             collectPath(seg.optJSONArray("timelinePath"), segStart, segEnd, raw)
             seg.optJSONObject("activity")?.let { act ->
                 collectPath(act.optJSONArray("timelinePath"), segStart, segEnd, raw)
+                // Current Takeout format: activity endpoints as coordinate
+                // strings ("31.5204°, 74.3587°" style).
+                parseCoordinate(act.opt("start"))?.let { (lat, lng) ->
+                    segStart?.let { raw.add(TrackPoint(lat, lng, it)) }
+                }
+                parseCoordinate(act.opt("end"))?.let { (lat, lng) ->
+                    segEnd?.let { raw.add(TrackPoint(lat, lng, it)) }
+                }
             }
 
             // Visits become dwell points so the marker pauses there.
-            seg.optJSONObject("visit")?.let { collectVisit(it, raw) }
+            seg.optJSONObject("visit")?.let { collectVisit(it, segStart, segEnd, raw) }
             seg.optJSONArray("visits")?.let { visits ->
                 for (v in 0 until visits.length()) {
-                    visits.optJSONObject(v)?.let { collectVisit(it, raw) }
+                    visits.optJSONObject(v)?.let { collectVisit(it, segStart, segEnd, raw) }
                 }
             }
 
@@ -237,16 +246,23 @@ object TimelineParser {
         for (j in 0 until n) {
             val entry = path.opt(j) ?: continue
             val (lat, lng) = parseCoordinate(entry) ?: continue
-            val t = timeOf(entry)
+            val t = timeOf(entry, segStart)
                 ?: interpolateTime(segStart, segEnd, j, n)
                 ?: continue
             out.add(TrackPoint(lat, lng, t))
         }
     }
 
-    private fun collectVisit(visit: JSONObject, out: MutableList<TrackPoint>) {
-        val start = parseTime(visit.optString("startTime", null)) ?: return
-        val end = parseTime(visit.optString("endTime", null)) ?: start
+    private fun collectVisit(
+        visit: JSONObject,
+        segStart: Long?,
+        segEnd: Long?,
+        out: MutableList<TrackPoint>,
+    ) {
+        // Current Takeout format keeps startTime/endTime on the segment,
+        // not inside the visit object.
+        val start = parseTime(visit.optString("startTime", null)) ?: segStart ?: return
+        val end = parseTime(visit.optString("endTime", null)) ?: segEnd ?: start
         val coord = findVisitCoordinate(visit) ?: return
         out.add(TrackPoint(coord.first, coord.second, start))
         if (end > start) out.add(TrackPoint(coord.first, coord.second, end))
@@ -311,6 +327,11 @@ object TimelineParser {
     }
 
     private fun findVisitCoordinate(visit: JSONObject): Pair<Double, Double>? {
+        // Current Takeout format: visit.topCandidate.placeLocation is a
+        // coordinate string ("31.5204°, 74.3587°" style), not an object.
+        visit.optJSONObject("topCandidate")?.opt("placeLocation")?.let {
+            parseCoordinate(it)?.let { coord -> return coord }
+        }
         val candidates = listOf(
             visit.optJSONObject("topCandidate")?.optJSONObject("placeLocation"),
             visit.optJSONObject("placeLocation"),
@@ -325,10 +346,15 @@ object TimelineParser {
         return null
     }
 
-    private fun timeOf(entry: Any?): Long? {
+    private fun timeOf(entry: Any?, segStart: Long? = null): Long? {
         if (entry !is JSONObject) return null
         for (key in listOf("time", "startTime", "timestamp", "timestampMs")) {
             parseTime(entry.optString(key, null))?.let { return it }
+        }
+        // Current Takeout format: minutes after the segment's start time.
+        if (segStart != null) {
+            val off = entry.optLong("durationMinutesOffsetFromStartTime", Long.MIN_VALUE)
+            if (off != Long.MIN_VALUE) return segStart + off * 60_000L
         }
         return null
     }
@@ -381,10 +407,17 @@ object TimelineParser {
     private fun parseLatLngString(s: String?): Pair<Double, Double>? {
         if (s.isNullOrBlank()) return null
         val cleaned = s.trim().removePrefix("geo:").substringBefore("?")
+            .replace("°", "")
+            .replace(" ", "")
         val parts = cleaned.split(",")
         if (parts.size < 2) return null
-        val lat = parts[0].trim().toDoubleOrNull() ?: return null
-        val lng = parts[1].trim().toDoubleOrNull() ?: return null
+        var lat = parts[0].toDoubleOrNull() ?: return null
+        var lng = parts[1].toDoubleOrNull() ?: return null
+        // E7 integer pairs sometimes appear as plain strings.
+        if (abs(lat) > 1_000_000 || abs(lng) > 1_000_000) {
+            lat /= 1e7
+            lng /= 1e7
+        }
         return if (valid(lat, lng)) lat to lng else null
     }
 

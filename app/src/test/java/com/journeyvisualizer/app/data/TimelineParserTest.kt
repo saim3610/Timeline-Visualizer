@@ -431,4 +431,120 @@ class TimelineParserTest {
         assertEquals(1, r.recordCount)
         assertTrue(r.firstRecordKeys.contains("mystery"))
     }
+
+    // -- Current Takeout shapes (degree strings, offsets) -----------------
+
+    @Test
+    fun timelinePath_degreeStrings_parses() {
+        val json = """
+            {
+              "semanticSegments": [
+                {
+                  "startTime": "2024-03-12T10:00:00Z",
+                  "endTime": "2024-03-12T11:00:00Z",
+                  "timelinePath": [
+                    {"point": "31.5204°, 74.3587°", "time": "2024-03-12T10:00:00Z"},
+                    {"point": "31.5300°, 74.3600°", "time": "2024-03-12T11:00:00Z"}
+                  ]
+                }
+              ]
+            }
+        """.trimIndent()
+        val r = TimelineParser.parseText(json, "test.json")
+
+        assertNull(r.failureReason)
+        assertEquals(2, r.pointCount)
+        assertEquals(31.5204, r.journey!!.points[0].lat, 1e-6)
+        assertEquals(74.3587, r.journey!!.points[0].lng, 1e-6)
+    }
+
+    @Test
+    fun timelinePath_offsetMinutesFromStart_parses() {
+        val json = """
+            {
+              "semanticSegments": [
+                {
+                  "startTime": "2024-03-12T10:00:00Z",
+                  "endTime": "2024-03-12T11:00:00Z",
+                  "timelinePath": [
+                    {"point": "31.5204°, 74.3587°", "durationMinutesOffsetFromStartTime": 30}
+                  ]
+                }
+              ]
+            }
+        """.trimIndent()
+        val r = TimelineParser.parseText(json, "test.json")
+
+        assertNull(r.failureReason)
+        assertEquals(1, r.pointCount)
+        // 10:00 + 30 min = 1710239400000
+        assertEquals(1710239400000L, r.journey!!.points[0].timeMs)
+    }
+
+    @Test
+    fun activity_startEndDegreeStrings_parse() {
+        val json = """
+            {
+              "semanticSegments": [
+                {
+                  "startTime": "2024-03-12T10:00:00Z",
+                  "endTime": "2024-03-12T11:00:00Z",
+                  "activity": {
+                    "start": "31.5204°, 74.3587°",
+                    "end": "31.5300°, 74.3600°",
+                    "activityType": "WALKING"
+                  }
+                }
+              ]
+            }
+        """.trimIndent()
+        val r = TimelineParser.parseText(json, "test.json")
+
+        assertNull(r.failureReason)
+        assertEquals(2, r.pointCount)
+        assertEquals(74.3600, r.journey!!.points[1].lng, 1e-6)
+    }
+
+    @Test
+    fun visit_topCandidatePlaceLocationDegrees_parses() {
+        val json = """
+            {
+              "semanticSegments": [
+                {
+                  "startTime": "2024-03-12T10:00:00Z",
+                  "endTime": "2024-03-12T10:30:00Z",
+                  "visit": {
+                    "topCandidate": {"placeLocation": "31.5204°, 74.3587°"}
+                  }
+                }
+              ]
+            }
+        """.trimIndent()
+        val r = TimelineParser.parseText(json, "test.json")
+
+        assertNull(r.failureReason)
+        assertEquals(2, r.pointCount)
+    }
+
+    @Test
+    fun pointString_e7Integers_parses() {
+        val json = """
+            {
+              "semanticSegments": [
+                {
+                  "startTime": "2024-03-12T10:00:00Z",
+                  "endTime": "2024-03-12T11:00:00Z",
+                  "timelinePath": [
+                    {"point": "315204000, 743587000", "time": "2024-03-12T10:00:00Z"}
+                  ]
+                }
+              ]
+            }
+        """.trimIndent()
+        val r = TimelineParser.parseText(json, "test.json")
+
+        assertNull(r.failureReason)
+        assertEquals(1, r.pointCount)
+        assertEquals(31.5204, r.journey!!.points[0].lat, 1e-6)
+    }
 }
