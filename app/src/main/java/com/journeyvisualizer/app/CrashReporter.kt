@@ -49,10 +49,17 @@ object CrashReporter {
 
     /**
      * Returns the pending crash report and clears it, or null when the
-     * previous session did not crash.
+     * previous session did not crash. A real crash report wins; otherwise a
+     * watchdog ANR trace (main thread froze, then the process died) is
+     * surfaced the same way.
      */
     fun consumeReport(app: Context): String? {
-        val file = File(app.filesDir, FILE_NAME)
+        consumeFile(app, FILE_NAME)?.let { return it }
+        return consumeFile(app, AnrWatchdog.ANR_FILE_NAME)
+    }
+
+    private fun consumeFile(app: Context, name: String): String? {
+        val file = File(app.filesDir, name)
         if (!file.exists()) return null
         val text = runCatching { file.readText() }.getOrNull()
         runCatching { file.delete() }
