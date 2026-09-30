@@ -22,6 +22,11 @@ data class ParseResult(
     val formatName: String = "",
     /** Machine-readable failure reason when [journey] is null. */
     val failureReason: FailureReason? = null,
+    /**
+     * Top-level keys of the first record, for diagnosable failure messages
+     * (key names only — never values, so no coordinates can leak).
+     */
+    val firstRecordKeys: List<String> = emptyList(),
 )
 
 /** Why parsing produced no journey; used by the import UI for error copy. */
@@ -114,6 +119,17 @@ object TimelineParser {
         }
         onProgress(0.1f)
 
+        // Key names of the first record, so a "no points" failure can name
+        // the actual shape instead of guessing (keys only — no values).
+        val firstRecordKeys: List<String> = run {
+            val first = (0 until segments.length())
+                .firstNotNullOfOrNull { segments.optJSONObject(it) }
+            val out = ArrayList<String>()
+            val keys = first?.keys() ?: return@run out
+            while (keys.hasNext() && out.size < 8) out.add(keys.next())
+            out
+        }
+
         val raw = ArrayList<TrackPoint>(segments.length() * 4)
         val total = segments.length().coerceAtLeast(1)
         for (i in 0 until segments.length()) {
@@ -142,6 +158,11 @@ object TimelineParser {
                     visits.optJSONObject(v)?.let { collectVisit(it, raw) }
                 }
             }
+
+            // Older Takeout "timelineObjects"-style wrappers, also seen under
+            // "semanticSegments" in some exports.
+            seg.optJSONObject("activitySegment")?.let { collectActivitySegment(it, segStart, segEnd, raw) }
+            seg.optJSONObject("placeVisit")?.let { collectPlaceVisit(it, raw) }
             if (i % 32 == 0) onProgress(0.1f + 0.8f * (i + 1) / total)
         }
         onProgress(0.9f)
@@ -155,6 +176,7 @@ object TimelineParser {
                 rawPointCount = 0,
                 formatName = formatName,
                 failureReason = FailureReason.NO_POINTS,
+                firstRecordKeys = firstRecordKeys,
             )
         }
 
@@ -230,6 +252,64 @@ object TimelineParser {
         if (end > start) out.add(TrackPoint(coord.first, coord.second, end))
     }
 
+    /**
+     * Older Takeout activity segments:
+     * `{ activitySegment: { waypointPath: { waypoints: [{ latE7, lngE7, ... }] } } }`.
+     * Waypoints rarely carry times, so segment bounds are the fallback.
+     */
+    private fun collectActivitySegment(
+        segment: JSONObject,
+        segStart: Long?,
+        segEnd: Long?,
+        out: MutableList<TrackPoint>,
+    ) {
+        val waypoints = segment.optJSONObject("waypointPath")?.optJSONArray("waypoints")
+            ?: return
+        val n = waypoints.length()
+        for (j in 0 until n) {
+            val entry = waypoints.opt(j) ?: continue
+            val (lat, lng) = parseCoordinate(entry) ?: continue
+            val t = timeOf(entry)
+                ?: interpolateTime(segStart, segEnd, j, n)
+                ?: continue
+            out.add(TrackPoint(lat, lng, t))
+        }
+        // Some exports only give start/end locations without a waypoint path.
+        if (n == 0) {
+            segment.optJSONObject("startLocation")?.let { loc ->
+                parseCoordinate(loc)?.let { (lat, lng) ->
+                    segStart?.let { out.add(TrackPoint(lat, lng, it)) }
+                }
+            }
+            segment.optJSONObject("endLocation")?.let { loc ->
+                parseCoordinate(loc)?.let { (lat, lng) ->
+                    segEnd?.let { out.add(TrackPoint(lat, lng, it)) }
+                }
+            }
+        }
+    }
+
+    /**
+     * Older Takeout place visits:
+     * `{ placeVisit: { location: { latitudeE7, longitudeE7 }, duration: { startTimestampMs, endTimestampMs } } }`.
+     */
+    private fun collectPlaceVisit(visit: JSONObject, out: MutableList<TrackPoint>) {
+        val coord = parseCoordinate(visit.optJSONObject("location"))
+            ?: findVisitCoordinate(visit)
+            ?: return
+        val duration = visit.optJSONObject("duration")
+        val start = duration?.let {
+            parseTime(it.optString("startTimestampMs", null))
+                ?: parseTime(it.optString("startTimestamp", null))
+        } ?: parseTime(visit.optString("startTime", null)) ?: return
+        val end = duration?.let {
+            parseTime(it.optString("endTimestampMs", null))
+                ?: parseTime(it.optString("endTimestamp", null))
+        } ?: parseTime(visit.optString("endTime", null)) ?: start
+        out.add(TrackPoint(coord.first, coord.second, start))
+        if (end > start) out.add(TrackPoint(coord.first, coord.second, end))
+    }
+
     private fun findVisitCoordinate(visit: JSONObject): Pair<Double, Double>? {
         val candidates = listOf(
             visit.optJSONObject("topCandidate")?.optJSONObject("placeLocation"),
@@ -269,6 +349,12 @@ object TimelineParser {
                     if (obj.has("latitudeE7") && obj.has("longitudeE7")) {
                         val lat = obj.optDouble("latitudeE7", Double.NaN) / 1e7
                         val lng = obj.optDouble("longitudeE7", Double.NaN) / 1e7
+                        if (valid(lat, lng)) return lat to lng
+                    }
+                    // Older Takeout exports use the shorter latE7/lngE7 names.
+                    if (obj.has("latE7") && obj.has("lngE7")) {
+                        val lat = obj.optDouble("latE7", Double.NaN) / 1e7
+                        val lng = obj.optDouble("lngE7", Double.NaN) / 1e7
                         if (valid(lat, lng)) return lat to lng
                     }
                     if (obj.has("latitude") && obj.has("longitude")) {

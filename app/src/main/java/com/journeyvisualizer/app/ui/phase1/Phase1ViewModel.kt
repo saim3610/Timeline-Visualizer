@@ -438,7 +438,11 @@ class Phase1ViewModel : ViewModel() {
                 val detail = buildString {
                     append(reasonCopy(reason))
                     if (result.recordCount > 0 && result.formatName.isNotEmpty()) {
-                        append(" (Found ${result.recordCount} records in '${result.formatName}' format.)")
+                        append(" (Found ${result.recordCount} records in '${result.formatName}' format.")
+                        if (result.firstRecordKeys.isNotEmpty()) {
+                            append(" First record keys: ${result.firstRecordKeys.joinToString(", ")}.")
+                        }
+                        append(")")
                     }
                 }
                 fail(reason, detail)

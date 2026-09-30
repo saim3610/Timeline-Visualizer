@@ -5,6 +5,8 @@
     <!-- No location permission: we only read the Timeline.json file the user picks. -->
     <!-- No storage permission: video output goes through MediaStore. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Needed to query ConnectivityManager for the offline map banner. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROCESSING" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />

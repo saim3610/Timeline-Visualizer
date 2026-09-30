@@ -363,4 +363,72 @@ class TimelineParserTest {
         assertNull(r.failureReason)
         assertEquals(2, r.pointCount)
     }
+
+    // -- Older Takeout wrappers -------------------------------------------
+
+    @Test
+    fun activitySegment_waypointsWithLatE7_parses() {
+        val json = """
+            {
+              "semanticSegments": [
+                {
+                  "startTime": "2024-03-12T10:00:00Z",
+                  "endTime": "2024-03-12T11:00:00Z",
+                  "activitySegment": {
+                    "waypointPath": {
+                      "waypoints": [
+                        {"latE7": 315204000, "lngE7": 743587000},
+                        {"latE7": 315300000, "lngE7": 743700000}
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+        """.trimIndent()
+        val r = TimelineParser.parseText(json, "test.json")
+
+        assertNull(r.failureReason)
+        assertEquals("semantic", r.formatName)
+        assertEquals(2, r.pointCount)
+        assertEquals(31.5204, r.journey!!.points[0].lat, 1e-6)
+        assertEquals(74.3587, r.journey!!.points[0].lng, 1e-6)
+    }
+
+    @Test
+    fun placeVisit_locationAndDuration_parses() {
+        val json = """
+            {
+              "semanticSegments": [
+                {
+                  "placeVisit": {
+                    "location": {"latitudeE7": 315204000, "longitudeE7": 743587000},
+                    "duration": {
+                      "startTimestampMs": "1710237600000",
+                      "endTimestampMs": "1710239400000"
+                    }
+                  }
+                }
+              ]
+            }
+        """.trimIndent()
+        val r = TimelineParser.parseText(json, "test.json")
+
+        assertNull(r.failureReason)
+        assertEquals(2, r.pointCount)
+        assertEquals(1710237600000L, r.journey!!.points[0].timeMs)
+        assertEquals(1710239400000L, r.journey!!.points[1].timeMs)
+    }
+
+    @Test
+    fun noPoints_reportsFirstRecordKeys() {
+        val r = TimelineParser.parseText(
+            """{"semanticSegments": [{"startTime": "2024-01-01T00:00:00Z", "mystery": 1}]}""",
+            "test.json",
+        )
+
+        assertEquals(FailureReason.NO_POINTS, r.failureReason)
+        assertEquals(1, r.recordCount)
+        assertTrue(r.firstRecordKeys.contains("mystery"))
+    }
 }

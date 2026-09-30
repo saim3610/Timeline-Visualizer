@@ -191,11 +191,17 @@ private fun InteractiveMapController.applyUiState(
 }
 
 private fun isOnline(context: Context): Boolean {
-    val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
-        ?: return false
-    val net = cm.activeNetwork ?: return false
-    val caps = cm.getNetworkCapabilities(net) ?: return false
-    return caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    // Defensive: a missing ACCESS_NETWORK_STATE permission (or any
+    // ConnectivityManager failure) must show the offline banner, never crash.
+    return try {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+            ?: return false
+        val net = cm.activeNetwork ?: return false
+        val caps = cm.getNetworkCapabilities(net) ?: return false
+        caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    } catch (_: Exception) {
+        false
+    }
 }
 
 @Composable
