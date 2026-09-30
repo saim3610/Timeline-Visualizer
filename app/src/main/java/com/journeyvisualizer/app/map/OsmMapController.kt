@@ -89,7 +89,7 @@ class OsmMapController(private val appContext: Context) : InteractiveMapControll
     // ------------------------------------------------------------------
 
     /** Bind to a MapView (call from AndroidView factory). */
-    fun attach(view: MapView) {
+    override fun attach(view: MapView) {
         Configuration.getInstance().setUserAgentValue(appContext.packageName)
         mapView = view
         view.setTileSource(patternSource(BasemapStyles.specFor(style).base))

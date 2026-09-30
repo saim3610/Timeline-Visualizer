@@ -24,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Movie
+import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.material.icons.filled.Search
