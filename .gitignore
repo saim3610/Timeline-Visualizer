@@ -1,0 +1,16 @@
+# Gradle / Android
+.gradle/
+build/
+local.properties
+*.iml
+
+# Android Studio
+.idea/
+*.hprof
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Exported videos and tile cache are runtime artifacts, never commit them
+*.mp4

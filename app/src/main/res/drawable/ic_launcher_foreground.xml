@@ -1,0 +1,23 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Dashed journey route -->
+    <path
+        android:strokeColor="#38BDF8"
+        android:strokeWidth="7"
+        android:strokeLineCap="round"
+        android:pathData="M24,78 C34,60 30,52 44,46 S60,40 62,30 S74,22 84,26" />
+    <!-- Start dot -->
+    <path
+        android:fillColor="#38BDF8"
+        android:pathData="M24,78 m-7,0 a7,7 0,1 0,14 0 a7,7 0,1 0,-14 0" />
+    <!-- Destination pin -->
+    <path
+        android:fillColor="#F472B6"
+        android:pathData="M84,26 m-11,0 a11,11 0,1 0,22 0 a11,11 0,1 0,-22 0" />
+    <path
+        android:fillColor="#0F172A"
+        android:pathData="M84,26 m-4.5,0 a4.5,4.5 0,1 0,9 0 a4.5,4.5 0,1 0,-9 0" />
+</vector>

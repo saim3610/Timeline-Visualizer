@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Timeline Visualizer</string>
+
+    <!-- Bottom navigation -->
+    <string name="tab_videos">My videos</string>
+    <string name="tab_create">Create</string>
+    <string name="tab_journal">Journal</string>
+    <string name="tab_settings">Settings</string>
+
+    <!-- Video format labels -->
+    <string name="fmt_square_480">Square 480p</string>
+    <string name="fmt_square_720">Square 720p</string>
+    <string name="fmt_square_1080">Square 1080p</string>
+    <string name="fmt_portrait_1080">Portrait 1080 × 1920</string>
+    <string name="fmt_landscape_1080">Landscape 1920 × 1080</string>
+
+    <!-- Camera mode labels -->
+    <string name="camera_steady">Steady camera (follows smoothly)</string>
+    <string name="camera_dynamic">Dynamic camera (speed-aware)</string>
+    <string name="camera_fixed">Fixed camera (whole trip in view)</string>
+
+    <!-- Pace (time warp) labels -->
+    <string name="pace_linear">Natural pace</string>
+    <string name="pace_compress">Skip the waits</string>
+
+    <!-- Export notifications -->
+    <string name="notif_channel">Video export</string>
+    <string name="notif_preparing">Preparing export…</string>
+    <string name="notif_rendering">Rendering… %1$d%%</string>
+    <string name="notif_creating">Creating journey video</string>
+    <string name="notif_cancel">Cancel</string>
+    <string name="notif_saved">Video saved</string>
+    <string name="notif_ready">Your journey video is ready.</string>
+    <string name="notif_cancelled">Export cancelled</string>
+    <string name="notif_cancelled_text">The unfinished video was removed.</string>
+    <string name="notif_failed">Export failed</string>
+    <string name="notif_unknown">Unknown error</string>
+
+    <!-- Create screen -->
+    <string name="create_title">Create video</string>
+    <string name="create_pick_file">Choose Timeline.json</string>
+    <string name="create_importing">Reading your Timeline export…</string>
+    <string name="create_points">%1$d points</string>
+    <string name="create_warnings">%1$d points skipped as GPS noise</string>
+    <string name="create_start_date">Start date</string>
+    <string name="create_end_date">End date</string>
+    <string name="create_video_title">Video title</string>
+    <string name="create_duration">Video length: %1$d seconds</string>
+    <string name="create_format">Format</string>
+    <string name="create_camera">Camera</string>
+    <string name="create_pace">Pace</string>
+    <string name="create_preview">Preview</string>
+    <string name="create_export">Export video</string>
+    <string name="create_export_started">Export started — follow progress in notifications.</string>
+    <string name="create_no_data">The selected date range has no journey data.</string>
+    <string name="create_prefetch">Download map tiles</string>
+    <string name="create_prefetching">Downloading tiles… %1$d%%</string>
+    <string name="create_prefetch_done">Tiles cached — export can run offline.</string>
+    <string name="create_prefetch_failed">Could not download tiles.</string>
+    <string name="create_journal_saved">Saved to your travel journal.</string>
+    <string name="create_import_first">Pick your Timeline.json to begin.</string>
+    <string name="create_visited_cities">Visited cities</string>
+    <string name="create_use_cities_title">Use as video title</string>
+    <string name="create_intro">Turn your Google Timeline export into an animated travel video.</string>
+    <string name="create_howto">On your phone: Settings → Location → Location services → Timeline → Export Timeline data, then choose the Timeline.json file here.</string>
+    <string name="create_export_note">Rendering continues with the screen off. The MP4 is saved to Movies/Timeline Visualizer.</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_ok">OK</string>
+
+    <!-- Preview screen -->
+    <string name="preview_import_first">Import a Timeline.json first to preview a journey.</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_play">Play</string>
+    <string name="cd_pause">Pause</string>
+
+    <!-- Videos screen -->
+    <string name="videos_title">My videos</string>
+    <string name="videos_empty">No videos yet. Create one from the Create tab and it will appear here.</string>
+    <string name="cd_refresh">Refresh</string>
+    <string name="cd_share">Share</string>
+    <string name="cd_delete">Delete</string>
+    <string name="delete_title">Delete video?</string>
+    <string name="delete_text">%1$s will be permanently deleted.</string>
+    <string name="delete_confirm">Delete</string>
+
+    <!-- Journal screen -->
+    <string name="journal_title">Travel journal</string>
+    <string name="journal_empty">Your imported journeys will appear here. Import a Timeline.json to start your journal.</string>
+    <string name="journal_make_video">Make video</string>
+    <string name="journal_combine_hint">Select trips to combine into one video.</string>
+    <string name="journal_imported_on">Imported %1$s</string>
+    <string name="journal_combine_failed">Could not load the selected trips.</string>
+
+    <!-- Settings screen -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_video_defaults">Video defaults</string>
+    <string name="settings_distance_unit">Distance unit</string>
+    <string name="unit_km">Kilometers</string>
+    <string name="unit_mi">Miles</string>
+    <string name="settings_default_length">Default video length: %1$d seconds</string>
+    <string name="settings_default_format">Default format</string>
+    <string name="settings_default_camera">Default camera</string>
+    <string name="settings_default_pace">Default pace</string>
+    <string name="settings_title_template">Title template</string>
+    <string name="settings_template_hint">{year} and {name} are replaced automatically</string>
+    <string name="settings_restore">Restore defaults</string>
+    <string name="settings_privacy">Privacy</string>
+    <string name="settings_privacy_text">Your Timeline file never leaves this device and is never uploaded. No account, no sign-in, no analytics. The only network use is downloading map tiles from CARTO (OpenStreetMap data) for the areas shown, with attribution in every video.</string>
+    <string name="settings_about">About</string>
+    <string name="settings_about_text">Timeline Visualizer 0.3.0</string>
+    <!-- Bottom navigation (Phase 1) -->
+    <string name="tab_home">Home</string>
+    <string name="tab_history">History</string>
+
+    <!-- Splash -->
+    <string name="splash_tagline">Turn your timeline into an animated video</string>
+
+    <!-- Home -->
+    <string name="home_hero_title">Create Amazing Timeline Videos</string>
+    <string name="home_hero_text">Upload your timeline.json file and turn it into a beautiful animated video with maps, locations, and smooth motion.</string>
+    <string name="home_upload_cta">Upload timeline.json</string>
+    <string name="home_features">Features</string>
+    <string name="home_feat_map_title">Animated Map</string>
+    <string name="home_feat_map_text">Visualize your locations on an animated map.</string>
+    <string name="home_feat_styles_title">Multiple Map Styles</string>
+    <string name="home_feat_styles_text">Choose Standard, Satellite, Hybrid, or Terrain.</string>
+    <string name="home_feat_anim_title">Smooth Timeline Animation</string>
+    <string name="home_feat_anim_text">Turn your journey into a beautiful animated story.</string>
+    <string name="home_feat_export_title">Video Export</string>
+    <string name="home_feat_export_text">Generate a high-quality video from your timeline.</string>
+
+    <!-- Upload -->
+    <string name="upload_title">Upload Timeline</string>
+    <string name="upload_drop_title">Choose your timeline.json</string>
+    <string name="upload_drop_text">Upload your Google Timeline JSON file</string>
+    <string name="upload_choose">Choose File</string>
+    <string name="upload_supported">Supported Format</string>
+    <string name="upload_supported_name">timeline.json</string>
+    <string name="upload_supported_desc">JSON file</string>
+    <string name="upload_howto">How to get your Timeline JSON</string>
+    <string name="upload_use_sample">Or use a sample file</string>
+
+    <!-- File summary / validation -->
+    <string name="summary_title">Timeline File</string>
+    <string name="summary_records">Timeline records</string>
+    <string name="summary_segments">Timeline segments</string>
+    <string name="summary_valid_locations">Valid locations</string>
+    <string name="summary_range">Date range</string>
+    <string name="summary_size">File size</string>
+    <string name="summary_ok">Timeline file looks good</string>
+    <string name="summary_warning_title">Timeline imported with warnings</string>
+    <string name="summary_check_json">JSON file is valid</string>
+    <string name="summary_check_timeline">Timeline data detected</string>
+    <string name="summary_check_geo">Geographic data found</string>
+    <string name="summary_invalid_records">%1$d records could not be mapped to coordinates</string>
+    <string name="summary_continue">Continue</string>
+    <string name="summary_change">Choose another file</string>
+    <string name="summary_error_hint">Please select a Google Timeline JSON export.</string>
+    <string name="import_error_empty">Timeline file is empty.</string>
+    <string name="import_error_read">Unable to read this file.</string>
+    <string name="import_error_json">This file contains invalid JSON.</string>
+    <string name="import_error_format">This file could not be recognized.</string>
+    <string name="import_error_nopoints">No locations found.</string>
+    <string name="import_error_toolarge">This file is too large to process.</string>
+
+    <!-- Processing -->
+    <string name="processing_title">Preparing your timeline</string>
+    <string name="processing_subtitle">This may take a few moments.</string>
+    <string name="processing_stage_reading">Reading file</string>
+    <string name="processing_stage_detecting">Detecting timeline format</string>
+    <string name="processing_stage_parsing">Parsing timeline records</string>
+    <string name="processing_stage_resolving">Resolving location names</string>
+    <string name="processing_stage_finalizing">Preparing preview</string>
+
+    <!-- Location resolution (Phase 3) -->
+    <string name="location_status_resolved">Resolved</string>
+    <string name="location_status_approximate">Approximate</string>
+    <string name="location_status_unresolved">Unavailable</string>
+    <string name="location_unavailable_title">Location unavailable</string>
+    <string name="location_unavailable_short">Location unavailable</string>
+    <string name="location_unavailable_body">No known place was found near this coordinate in the offline location data.</string>
+    <string name="location_near_distance">About %1$s from the known location</string>
+    <string name="location_approx_distance">Approximate location — about %1$s from the nearest known place</string>
+    <string name="summary_locations_named">Locations named</string>
+
+    <!-- Timeline preview -->
+    <string name="tlpreview_title">Preview &amp; Edit</string>
+    <string name="tlpreview_events">Timeline Events</string>
+    <string name="tlpreview_events_count">%1$d locations</string>
+    <string name="tlpreview_customize">Customize Video</string>
+    <string name="tlpreview_sample_title">Sample Journey</string>
+    <string name="tlpreview_summary_sample">Import a Timeline JSON to map your own journey</string>
+    <string name="tlpreview_summary_real">%1$d points · %2$d locations named</string>
+    <string name="map_fit_timeline">Fit timeline</string>
+    <string name="map_change_style">Change map style</string>
+    <string name="map_offline">Offline — showing cached tiles</string>
+    <string name="map_empty_title">No timeline locations available.</string>
+    <string name="map_empty_body">Import a Timeline JSON to see your journey on the map.</string>
+
+    <!-- Phase 5: timeline animation -->
+    <string name="anim_panel_title">Journey playback</string>
+    <string name="anim_play">Play</string>
+    <string name="anim_pause">Pause</string>
+    <string name="anim_stop">Stop</string>
+    <string name="anim_restart">Restart</string>
+    <string name="anim_replay">Replay</string>
+    <string name="anim_previous">Previous point</string>
+    <string name="anim_next">Next point</string>
+    <string name="anim_traveling_to">Traveling to %1$s</string>
+    <string name="anim_speed">Speed</string>
+    <string name="anim_route_mode">Route</string>
+    <string name="anim_route_full">Full route</string>
+    <string name="anim_route_progressive">Progressive</string>
+    <string name="anim_follow">Follow</string>
+    <string name="anim_free">Free</string>
+    <string name="anim_recenter">Recenter</string>
+    <string name="anim_no_animation">This timeline has no animatable points.</string>
+
+    <!-- Customize -->
+    <string name="custom_title">Preview &amp; Edit</string>
+    <string name="custom_section_timeline">Timeline</string>
+    <string name="custom_start">Start point</string>
+    <string name="custom_end">End point</string>
+    <string name="custom_selected">Selected locations</string>
+    <string name="custom_section_animation">Animation</string>
+    <string name="custom_speed">Animation Speed</string>
+    <string name="speed_slow">Slow</string>
+    <string name="speed_normal">Normal</string>
+    <string name="speed_fast">Fast</string>
+    <string name="custom_section_map">Map</string>
+    <string name="custom_map_style">Map Style</string>
+    <string name="custom_section_labels">Labels</string>
+    <string name="custom_label_names">Location names</string>
+    <string name="custom_label_dates">Dates</string>
+    <string name="custom_label_route">Route</string>
+    <string name="custom_label_distance">Distance</string>
+    <string name="custom_generate">Generate Video</string>
+
+    <!-- Map style -->
+    <string name="mapstyle_title">Map Style</string>
+    <string name="mapstyle_apply">Apply</string>
+    <string name="style_standard">Standard</string>
+    <string name="style_satellite">Satellite</string>
+    <string name="style_hybrid">Hybrid</string>
+    <string name="style_terrain">Terrain</string>
+
+    <!-- Video settings -->
+    <string name="vsettings_title">Video Settings</string>
+    <string name="vsettings_resolution">Video Resolution</string>
+    <string name="vsettings_aspect">Aspect Ratio</string>
+    <string name="vsettings_speed">Animation Speed</string>
+    <string name="vsettings_quality">Video Quality</string>
+    <string name="vsettings_fps">Frame Rate</string>
+    <string name="vsettings_save">Save Settings</string>
+    <string name="res_720">720p HD</string>
+    <string name="res_720_sub">Good quality, smaller size</string>
+    <string name="res_1080">1080p Full HD</string>
+    <string name="res_1080_sub">Best quality, recommended</string>
+    <string name="res_4k">4K Ultra HD</string>
+    <string name="res_4k_sub">Highest quality, larger size</string>
+    <string name="aspect_landscape">16:9 Landscape</string>
+    <string name="aspect_portrait">9:16 Portrait</string>
+    <string name="aspect_square">1:1 Square</string>
+    <string name="quality_standard">Standard</string>
+    <string name="quality_high">High</string>
+    <string name="quality_max">Maximum</string>
+    <string name="fps_30">30 FPS</string>
+    <string name="fps_30_sub">Smooth, smaller file</string>
+    <string name="fps_60">60 FPS</string>
+    <string name="fps_60_sub">Extra smooth motion</string>
+
+    <!-- Video generation -->
+    <string name="gen_title">Creating your timeline video</string>
+    <string name="gen_subtitle">This may take a few moments.</string>
+
+    <!-- Video result -->
+    <string name="result_title">Timeline Video</string>
+    <string name="result_share">Share</string>
+    <string name="result_save">Save</string>
+    <string name="result_download">Download</string>
+    <string name="result_regenerate">Regenerate</string>
+
+    <!-- History -->
+    <string name="history_title">My Videos</string>
+    <string name="history_empty_title">No timeline videos yet</string>
+    <string name="history_empty_text">Upload a timeline to create your first video.</string>
+    <string name="history_upload">Upload Timeline</string>
+    <string name="history_menu_open">Open</string>
+    <string name="history_menu_share">Share</string>
+    <string name="history_menu_rename">Rename</string>
+    <string name="history_menu_delete">Delete</string>
+    <!-- Phase 8: search, sort, actions -->
+    <string name="history_search_hint">Search videos, places…</string>
+    <string name="history_sort_newest">Newest first</string>
+    <string name="history_sort_oldest">Oldest first</string>
+    <string name="history_sort_name">Name A–Z</string>
+    <string name="history_filter_recent">Recent</string>
+    <string name="history_search_empty_title">No matches</string>
+    <string name="history_search_empty_text">Try a different name or place.</string>
+    <string name="history_search_clear">Clear search</string>
+    <string name="history_card_options">Video options</string>
+    <string name="desc_menu">Open menu</string>
+    <string name="history_action_play">Play</string>
+    <string name="history_action_share">Share</string>
+    <string name="history_action_rename">Rename</string>
+    <string name="history_action_delete">Delete</string>
+    <string name="history_rename_title">Rename video</string>
+    <string name="history_rename_confirm">Rename</string>
+    <string name="history_delete_title">Delete this video?</string>
+    <string name="history_delete_text">This will permanently remove “%1$s” from this device.</string>
+    <string name="history_delete_confirm">Delete</string>
+    <!-- Phase 8: video detail -->
+    <string name="detail_title">Video details</string>
+    <string name="detail_created">Created</string>
+    <string name="detail_duration">Duration</string>
+    <string name="detail_resolution">Resolution</string>
+    <string name="detail_fps">Frame rate</string>
+    <string name="detail_size">File size</string>
+    <string name="detail_aspect">Aspect ratio</string>
+    <string name="detail_map_style">Map style</string>
+    <string name="detail_timeline">Timeline</string>
+    <string name="detail_events">Timeline events</string>
+    <!-- Phase 8: result screen + sharing -->
+    <string name="export_result_details">Details</string>
+    <string name="export_result_history">My Videos</string>
+    <string name="share_no_app">No app is available to share this video.</string>
+
+    <!-- Settings (Phase 1) -->
+    <string name="prefs_title">Settings</string>
+    <string name="prefs_video">Video Settings</string>
+    <string name="prefs_map_style">Map Style</string>
+    <string name="prefs_anim_speed">Animation Speed</string>
+    <string name="prefs_video_quality">Video Quality</string>
+    <string name="prefs_aspect">Aspect Ratio</string>
+    <string name="prefs_general">General</string>
+    <string name="prefs_help">Help &amp; Support</string>
+    <string name="prefs_about">About App</string>
+    <string name="prefs_privacy">Privacy Policy</string>
+    <string name="prefs_storage">Storage</string>
+    <string name="prefs_clear_data">Clear Imported Timeline Data</string>
+    <string name="prefs_clear_videos">Clear Generated Videos</string>
+    <string name="prefs_clear_data_title">Clear imported data?</string>
+    <string name="prefs_clear_data_text">This will remove imported timeline data from this device preview.</string>
+    <string name="prefs_clear_videos_title">Clear generated videos?</string>
+    <string name="prefs_clear_videos_text">This will remove generated videos from this device preview.</string>
+    <string name="prefs_clear_confirm">Clear</string>
+    <string name="prefs_preview_note">Preview only — nothing was deleted.</string>
+
+    <!-- Help -->
+    <string name="help_title">Help &amp; Support</string>
+    <string name="help_howto">How to use Timeline Visualizer</string>
+    <string name="help_howto_sub">Step by step guide</string>
+    <string name="help_sample">Sample timeline.json</string>
+    <string name="help_sample_sub">Download example file</string>
+    <string name="help_faq">FAQ</string>
+    <string name="help_faq_sub">Common questions</string>
+    <string name="help_contact">Contact Us</string>
+    <string name="help_contact_sub">Get in touch with us</string>
+    <string name="help_box_title">Need more help?</string>
+    <string name="help_box_text">We\'re here to assist you.</string>
+    <string name="help_box_cta">Contact Support</string>
+
+    <!-- About -->
+    <string name="about_title">About</string>
+    <string name="about_version">Version 1.0.0</string>
+    <string name="about_desc">Turn your timeline.json into a beautiful animated video with maps, locations, and smooth motion.</string>
+    <string name="about_feat_json">Timeline JSON support</string>
+    <string name="about_feat_maps">Animated maps</string>
+    <string name="about_feat_styles">Multiple map styles</string>
+    <string name="about_feat_video">Video generation</string>
+    <string name="about_feat_local">Local processing</string>
+    <string name="about_licenses">Open Source / Licenses</string>
+    <string name="about_privacy">Privacy Policy</string>
+
+    <!-- Phase 6: video preview & composition -->
+    <string name="tlpreview_video_preview">Video Preview</string>
+    <string name="vpreview_title">Video Preview</string>
+    <string name="vpreview_no_timeline">Import a timeline first — the video preview needs the real animation engine.</string>
+    <string name="vpreview_recenter">Recenter</string>
+    <string name="vpreview_fullscreen">Fullscreen preview</string>
+    <string name="vpreview_close_fullscreen">Close fullscreen</string>
+    <string name="vpreview_intro_default">My Journey</string>
+    <string name="vpreview_outro_title">Journey Complete</string>
+    <string name="vpreview_issues">Fix before continuing</string>
+    <string name="vpreview_continue">Continue</string>
+    <string name="vpreview_continue_note">Video export arrives in Phase 7. Your composition is validated and saved.</string>
+    <string name="vpreview_presets">Presets</string>
+    <string name="vpreview_reset">Reset to Default</string>
+    <string name="vpreview_reset_note">Reset restores default video settings only. Your timeline, locations, and imported file are kept.</string>
+    <string name="vpreview_aspect">Aspect Ratio</string>
+    <string name="vpreview_aspect_note">The preview frame matches the selected ratio. The map is never stretched — geography keeps its true proportions.</string>
+    <string name="vpreview_resolution">Resolution (export)</string>
+    <string name="vpreview_export_size">Export size: %1$d × %2$d</string>
+    <string name="vpreview_resolution_note">Preview uses the live map at device resolution (no heavy 4K buffers). The selected size applies when Phase 7 renders the video.</string>
+    <string name="vpreview_fps">Frame Rate</string>
+    <string name="vpreview_fps_note">Stored in the composition for the Phase 7 exporter. 30 FPS is the smooth default for map animation.</string>
+    <string name="vpreview_duration">Duration</string>
+    <string name="vpreview_dur_auto">Auto</string>
+    <string name="vpreview_dur_short">Short</string>
+    <string name="vpreview_dur_medium">Medium</string>
+    <string name="vpreview_dur_long">Long</string>
+    <string name="vpreview_dur_custom">Custom</string>
+    <string name="vpreview_dur_custom_label">Total video length</string>
+    <string name="vpreview_seconds">%d s</string>
+    <string name="vpreview_duration_breakdown">Total %1$s = intro %2$d s + journey %3$s + outro %4$d s</string>
+    <string name="vpreview_duration_note">Duration only changes time compression — events are never dropped and the original timestamps stay correct.</string>
+    <string name="vpreview_mapstyle">Map Style</string>
+    <string name="vpreview_camera">Camera Mode</string>
+    <string name="vpreview_cam_follow">Follow Journey</string>
+    <string name="vpreview_cam_smart">Smart Follow</string>
+    <string name="vpreview_cam_fixed">Fixed Overview</string>
+    <string name="vpreview_camera_note">Follow tracks the marker; Smart Follow uses a calmer, wider glide; Fixed Overview frames the whole route. All reuse the Phase 5 camera engine.</string>
+    <string name="vpreview_route">Route</string>
+    <string name="vpreview_route_show">Show route</string>
+    <string name="vpreview_route_progressive">Progressive</string>
+    <string name="vpreview_route_full">Full</string>
+    <string name="vpreview_route_width">Route thickness</string>
+    <string name="vpreview_route_opacity">Route opacity</string>
+    <string name="vpreview_marker">Marker</string>
+    <string name="vpreview_marker_standard">Standard</string>
+    <string name="vpreview_marker_minimal">Minimal dot</string>
+    <string name="vpreview_marker_highlighted">Highlighted</string>
+    <string name="vpreview_marker_hidden">Hidden</string>
+    <string name="vpreview_startend">Start / end markers</string>
+    <string name="vpreview_startend_sub">Uses the real first and last timeline coordinates</string>
+    <string name="vpreview_overlay">Overlay</string>
+    <string name="vpreview_overlay_location">Location</string>
+    <string name="vpreview_overlay_datetime">Date / time</string>
+    <string name="vpreview_overlay_progress">Progress indicator</string>
+    <string name="vpreview_title_field">Video title</string>
+    <string name="vpreview_title_hint">e.g. My Pakistan Journey</string>
+    <string name="vpreview_subtitle">Subtitle</string>
+    <string name="vpreview_subtitle_hint">e.g. March 2026</string>
+    <string name="vpreview_text_position">Text position</string>
+    <string name="vpreview_pos_top">Top</string>
+    <string name="vpreview_pos_topleft">Top-left</string>
+    <string name="vpreview_pos_topright">Top-right</string>
+    <string name="vpreview_pos_bottom">Bottom</string>
+    <string name="vpreview_pos_bottomleft">Bottom-left</string>
+    <string name="vpreview_pos_bottomright">Bottom-right</string>
+    <string name="vpreview_typography">Typography</string>
+    <string name="vpreview_weight_regular">Regular</string>
+    <string name="vpreview_weight_bold">Bold</string>
+    <string name="vpreview_align_start">Start</string>
+    <string name="vpreview_align_center">Center</string>
+    <string name="vpreview_align_end">End</string>
+    <string name="vpreview_safe_note">For 9:16, text keeps clear of the top notification area, the bottom social-media zone, and screen edges.</string>
+    <string name="vpreview_intro_outro">Intro / Outro</string>
+    <string name="vpreview_intro">Intro title card</string>
+    <string name="vpreview_intro_len">Intro length</string>
+    <string name="vpreview_outro">Outro card</string>
+    <string name="vpreview_outro_len">Outro length</string>
+    <string name="vpreview_outro_location">Show final location</string>
+    <string name="vpreview_export_title">Export video</string>
+    <string name="vpreview_export_body">Export: %1$d × %2$d · %3$d FPS · %4$s · %5$d events.\n\nThe video renders the exact animation and settings shown in this preview.</string>
+    <string name="vpreview_export_ok">Done</string>
+
+    <!-- Phase 7 export -->
+    <string name="export_start">Export</string>
+    <string name="export_probe_checking">Checking device encoder support…</string>
+    <string name="export_probe_ok">This device can encode these settings.</string>
+    <string name="export_probe_failed">Encoder check failed.</string>
+    <string name="export_probe_use_fallback">Use %1$s instead</string>
+    <string name="export_progress_title">Exporting video</string>
+    <string name="export_state_idle">Waiting to start.</string>
+    <string name="export_state_preparing">Preparing encoder and map tiles…</string>
+    <string name="export_state_rendering">Rendering frames…</string>
+    <string name="export_state_finalizing">Finalizing video…</string>
+    <string name="export_state_completed">Video exported.</string>
+    <string name="export_state_cancelled">Export cancelled. The unfinished video was removed.</string>
+    <string name="export_progress_detail">%1$d/%2$d frames · %3$d%% · %4$d fps · ETA %5$s</string>
+    <string name="export_cancel">Cancel</string>
+    <string name="export_result_title">Video exported</string>
+    <string name="export_result_missing">No completed export found. Render a video from the preview first.</string>
+    <string name="export_result_file">File</string>
+    <string name="export_result_duration">Duration</string>
+    <string name="export_result_resolution">Resolution</string>
+    <string name="export_result_size">Size</string>
+    <string name="export_result_share">Share</string>
+    <string name="export_result_done">Done</string>
+    <string name="notif_rendering_fps">Rendering… %1$d%% · %2$d fps</string>
+    <string name="notif_video_ready">%1$s is ready to play.</string>
+
+    <!-- Phase 9: Settings -->
+    <string name="dialog_cancel">Cancel</string>
+    <string name="prefs_appearance">Appearance</string>
+    <string name="prefs_theme">Theme</string>
+    <string name="theme_system">System default</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="prefs_map">Map</string>
+    <string name="prefs_map_camera">Default camera mode</string>
+    <string name="camera_follow_journey">Follow journey</string>
+    <string name="camera_smart_follow">Smart follow</string>
+    <string name="camera_fixed_overview">Fixed overview</string>
+    <string name="prefs_show_route_default">Show route by default</string>
+    <string name="prefs_show_route_default_sub">Draw the journey route on the map</string>
+    <string name="prefs_show_start_end_default">Show start/end markers</string>
+    <string name="prefs_show_start_end_default_sub">Mark the first and last stops</string>
+    <string name="prefs_video_defaults">Video defaults</string>
+    <string name="prefs_video_defaults_sub">Applied to new videos when you reset the composition</string>
+    <string name="prefs_default_preset">Default preset</string>
+    <string name="preset_travel">Travel</string>
+    <string name="preset_social">Social</string>
+    <string name="preset_minimal">Minimal</string>
+    <string name="prefs_default_aspect">Aspect ratio</string>
+    <string name="prefs_default_resolution">Resolution</string>
+    <string name="res_720p">720p HD</string>
+    <string name="res_1080p">1080p Full HD</string>
+    <string name="res_1440p">1440p Quad HD</string>
+    <string name="res_4k_unsupported">Not supported on this device</string>
+    <string name="prefs_default_fps">Frame rate</string>
+    <string name="prefs_default_route_visible">Show route in video</string>
+    <string name="prefs_default_marker_style">Marker style</string>
+    <string name="marker_standard">Standard</string>
+    <string name="marker_minimal_dot">Minimal dot</string>
+    <string name="marker_highlighted">Highlighted</string>
+    <string name="marker_hidden">Hidden</string>
+    <string name="prefs_default_start_end">Start/end markers in video</string>
+    <string name="prefs_default_intro_outro">Intro &amp; outro cards</string>
+    <string name="prefs_default_intro_outro_sub">Title card at the start, recap at the end</string>
+    <string name="prefs_playback">Playback</string>
+    <string name="prefs_default_speed">Default playback speed</string>
+    <string name="prefs_follow_camera_default">Follow camera by default</string>
+    <string name="prefs_follow_camera_default_sub">In the interactive timeline preview, track the moving marker instead of a fixed overview</string>
+    <string name="prefs_autoplay_preview">Autoplay preview</string>
+    <string name="prefs_autoplay_preview_sub">Start playing when the video preview opens</string>
+    <string name="storage_videos">Saved videos</string>
+    <string name="storage_videos_count">%1$d videos</string>
+    <string name="storage_cache">Cache</string>
+    <string name="storage_cache_thumbs">Video thumbnails</string>
+    <string name="storage_cache_tiles">Map tiles</string>
+    <string name="storage_cache_render">Render tiles</string>
+    <string name="storage_refresh">Refresh</string>
+    <string name="storage_clear_cache">Clear cache</string>
+    <string name="storage_clear_cache_title">Clear cache?</string>
+    <string name="storage_clear_cache_text">Removes regenerable thumbnails and map tiles. Your saved videos, history, and imported files are not affected.</string>
+    <string name="storage_cleared">Cache cleared · %1$s freed</string>
+    <string name="storage_nothing_to_clear">Cache is already empty</string>
+    <string name="storage_error">Could not read storage information.</string>
+    <string name="storage_loading">Measuring storage…</string>
+    <string name="prefs_privacy_about">Privacy &amp; about</string>
+    <string name="prefs_privacy_screen">Privacy</string>
+    <string name="prefs_licenses">Open-source licenses</string>
+    <string name="prefs_reset">Reset settings</string>
+    <string name="prefs_reset_title">Reset settings?</string>
+    <string name="prefs_reset_text">Restores all settings to their defaults. Your saved videos, video history, and imported files are kept. Your tuned video composition is also kept.</string>
+    <string name="prefs_reset_confirm">Reset</string>
+    <string name="prefs_reset_done">Settings restored to defaults</string>
+
+    <!-- Phase 9: Privacy screen -->
+    <string name="privacy_title">Privacy</string>
+    <string name="privacy_local_title">Local processing</string>
+    <string name="privacy_local_text">Everything happens on this device. Your timeline is parsed locally and videos are rendered locally with the device\u2019s own encoder. There is no account, no sign-in, and no server processing your data.</string>
+    <string name="privacy_timeline_title">Timeline data</string>
+    <string name="privacy_timeline_text">The app reads only the Timeline.json file you choose through the system file picker. The original file is never modified, moved, or deleted by the app \u2014 it stays exactly where you picked it.</string>
+    <string name="privacy_location_title">Location data</string>
+    <string name="privacy_location_text">The app visualizes the historical coordinates contained in your imported timeline. It does not track your live location, does not run in the background to collect locations, and does not request location permission.</string>
+    <string name="privacy_geonames_title">Place names (GeoNames)</string>
+    <string name="privacy_geonames_text">City names are resolved on-device from a bundled GeoNames dataset (CC-BY 4.0). Coordinates are never sent to a geocoding service.</string>
+    <string name="privacy_network_title">Network use</string>
+    <string name="privacy_network_text">The only network use is downloading map tiles for the areas you view or render (OpenStreetMap/CARTO, Esri, or OpenTopoMap depending on the map style). Your timeline data is never uploaded.</string>
+    <string name="privacy_videos_title">Video files</string>
+    <string name="privacy_videos_text">Generated videos are saved with Android\u2019s MediaStore into Movies/Timeline Visualizer on this device. The app manages only the videos it created itself; it never scans or deletes your other files.</string>
+    <string name="privacy_analytics_title">Analytics &amp; advertising</string>
+    <string name="privacy_analytics_text">No analytics SDK and no advertising SDK are included. The app does not measure your behavior or show ads.</string>
+    <string name="privacy_cloud_title">Cloud upload</string>
+    <string name="privacy_cloud_text">Imported timeline data and generated videos are not uploaded to any cloud backend by the app. Sharing only happens when you explicitly tap Share.</string>
+
+    <!-- Phase 9: Licenses screen -->
+    <string name="licenses_title">Open-source licenses</string>
+    <string name="licenses_intro">Third-party software and data used by Timeline Visualizer.</string>
+    <string name="license_kotlin">Kotlin &amp; Kotlin Coroutines</string>
+    <string name="license_compose">Jetpack Compose \u00b7 Material 3 \u00b7 Navigation \u00b7 DataStore \u00b7 Room</string>
+    <string name="license_apache">Apache License 2.0</string>
+    <string name="license_osmdroid">osmdroid (interactive map)</string>
+    <string name="license_geonames">GeoNames city data</string>
+    <string name="license_geonames_detail">Creative Commons Attribution 4.0 (CC-BY 4.0) \u00b7 bundled dataset, resolved on-device</string>
+    <string name="license_tiles">Map tiles &amp; imagery</string>
+    <string name="license_tiles_detail">\u00a9 OpenStreetMap contributors \u00a9 CARTO \u00b7 Imagery \u00a9 Esri, Maxar, Earthstar Geographics \u00b7 \u00a9 OpenStreetMap contributors, SRTM | style: \u00a9 OpenTopoMap (CC-BY-SA)</string>
+
+    <!-- Phase 9: Help screen -->
+    <string name="help_q_import">How do I import Google Timeline JSON?</string>
+    <string name="help_a_import">Tap Create Video on the Home screen, choose your Timeline.json with the system file picker, and the app parses it on-device. Your original file is never modified or deleted.</string>
+    <string name="help_q_formats">Which Timeline formats are supported?</string>
+    <string name="help_a_formats">The app reads the timelinePath / semantic segments format exported by Google Takeout (Location History). Files that cannot be parsed show a clear error with the reason instead of a blank screen.</string>
+    <string name="help_q_noname">Why is a location name missing?</string>
+    <string name="help_a_noname">Place names come from a bundled offline city dataset. A stop shows \u201cLocation unavailable\u201d when no known city is within range \u2014 the raw coordinates are still used for the map and the video.</string>
+    <string name="help_q_style">Why does a map style differ by provider/device?</string>
+    <string name="help_a_style">Map styles are real tile layers: Standard (CARTO), Satellite and Hybrid (Esri imagery), Terrain (OpenTopoMap). If tiles cannot load \u2014 for example offline \u2014 the map shows an offline notice instead of fake imagery.</string>
+    <string name="help_q_render">How does video generation work?</string>
+    <string name="help_a_render">The preview and the export share one deterministic animation: each video frame is computed from the frame timestamp, then rendered with the device encoder (H.264) into an MP4. Rendering runs in the background and survives navigation; you can cancel it at any time.</string>
+    <string name="help_q_where">Where are generated videos saved?</string>
+    <string name="help_a_where">In Movies/Timeline Visualizer on this device, managed through Android\u2019s MediaStore. They appear in My Videos with a thumbnail, duration, resolution, and the journey\u2019s date range.</string>
+    <string name="help_q_rename">How do I rename a saved video?</string>
+    <string name="help_a_rename">Open the video in My Videos, tap Rename, and enter a name. Renaming updates the display name in your library; the underlying video file stays exactly where it is.</string>
+    <string name="help_q_delete">How do I delete a generated video?</string>
+    <string name="help_a_delete">Open the video, tap Delete, and confirm. The app deletes the actual video file first, then removes its thumbnail and library entry. If the file cannot be deleted, the library entry is kept so you don\u2019t lose track of it.</string>
+    <string name="help_q_missing">Why can a generated video be missing from History?</string>
+    <string name="help_a_missing">If the video file was removed outside the app (for example in the Files app), the library removes the stale entry automatically the next time it loads. The app never deletes your other files.</string>
+    <string name="help_q_upload">Is my Timeline uploaded?</string>
+    <string name="help_a_upload">No. Import, place-name resolution, and video rendering all happen on this device. The only network use is downloading map tiles. See the Privacy screen for details.</string>
+    <string name="help_q_tracking">Does the app track my current location?</string>
+    <string name="help_a_tracking">No. It visualizes historical coordinates from the file you import. It does not request location permission and has no background location tracking.</string>
+
+    <!-- Phase 9: About screen -->
+    <string name="about_version_arg">Version %1$s</string>
+    <string name="about_desc_p9">Turn your Google Timeline history into animated journey videos \u2014 rendered privately, entirely on your device.</string>
+    <string name="about_privacy_note">Private by design: no account, no analytics, no ads, no cloud uploads. Your timeline never leaves this device.</string>
+</resources>
