@@ -202,7 +202,7 @@ fun TimelinePreviewScreen(
                 AnimationPanel(
                     engine = engine,
                     routeMode = ux.routeDrawMode,
-                    onRouteModeChange = { ux.setRouteDrawMode(it) },
+                    onRouteModeChange = { ux.routeDrawMode = it },
                     onRecenter = {
                         engine.setFollowMode(CameraFollowMode.FOLLOW)
                         val f = engine.frame.value

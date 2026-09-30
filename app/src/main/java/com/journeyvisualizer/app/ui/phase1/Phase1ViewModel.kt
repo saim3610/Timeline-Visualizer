@@ -179,11 +179,6 @@ class Phase1ViewModel : ViewModel() {
 
     /** Phase 5 route visualization mode (FULL vs PROGRESSIVE). */
     var routeDrawMode by mutableStateOf(RouteDrawMode.FULL)
-        private set
-
-    fun setRouteDrawMode(mode: RouteDrawMode) {
-        routeDrawMode = mode
-    }
 
     // -- Phase 6 video composition -----------------------------------------
 
