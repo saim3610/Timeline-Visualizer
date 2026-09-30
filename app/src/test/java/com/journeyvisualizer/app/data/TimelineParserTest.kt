@@ -269,4 +269,98 @@ class TimelineParserTest {
         assertEquals(1f, seen.last())
         assertTrue(seen.zipWithNext().all { (a, b) -> b >= a })
     }
+
+    // -- Classic Takeout "Location History" shape ---------------------------
+
+    @Test
+    fun locationsWrapper_parsesE7Points() {
+        val json = """
+            {
+              "locations": [
+                {"timestampMs": "1710237600000", "latitudeE7": 315204000, "longitudeE7": 743587000, "accuracy": 20},
+                {"timestampMs": "1710238200000", "latitudeE7": 315300000, "longitudeE7": 743700000, "accuracy": 20}
+              ]
+            }
+        """.trimIndent()
+        val r = TimelineParser.parseText(json, "Location History.json")
+
+        assertNull(r.failureReason)
+        assertNotNull(r.journey)
+        assertEquals("locations", r.formatName)
+        assertEquals(2, r.recordCount)
+        assertEquals(2, r.pointCount)
+        val p0 = r.journey!!.points[0]
+        assertEquals(31.5204, p0.lat, 1e-6)
+        assertEquals(74.3587, p0.lng, 1e-6)
+        assertEquals(1710237600000L, p0.timeMs)
+    }
+
+    @Test
+    fun locationsWrapper_emptyArray_reportsNoPoints() {
+        val r = TimelineParser.parseText("""{"locations": []}""", "Location History.json")
+
+        assertNull(r.journey)
+        assertEquals(FailureReason.NO_POINTS, r.failureReason)
+        assertEquals("locations", r.formatName)
+        assertEquals(0, r.recordCount)
+    }
+
+    @Test
+    fun objectWithoutKnownArrays_stillNotTimeline() {
+        val r = TimelineParser.parseText("""{"foo": "bar"}""", "weird.json")
+
+        assertNull(r.journey)
+        assertEquals(FailureReason.NOT_TIMELINE, r.failureReason)
+    }
+
+    @Test
+    fun semanticSegments_stillPreferredOverLocations() {
+        val json = """
+            {
+              "semanticSegments": [
+                {"point": "31.5204,74.3587", "time": "2024-03-12T10:00:00Z"},
+                {"point": "31.5300,74.3600", "time": "2024-03-12T10:30:00Z"}
+              ],
+              "locations": [
+                {"timestampMs": "1710237600000", "latitudeE7": 315204000, "longitudeE7": 743587000}
+              ]
+            }
+        """.trimIndent()
+        val r = TimelineParser.parseText(json, "both.json")
+
+        assertEquals("semantic", r.formatName)
+        assertEquals(2, r.recordCount)
+    }
+
+    // -- Shorthand coordinate spellings -------------------------------------
+
+    @Test
+    fun directArray_latLng_parses() {
+        val json = """
+            [
+              {"lat": 31.5204, "lng": 74.3587, "timestampMs": "1710237600000"},
+              {"lat": 31.5300, "lng": 74.3600, "timestampMs": "1710238200000"}
+            ]
+        """.trimIndent()
+        val r = TimelineParser.parseText(json, "test.json")
+
+        assertNull(r.failureReason)
+        assertEquals(2, r.pointCount)
+        assertEquals(31.5204, r.journey!!.points[0].lat, 1e-9)
+        assertEquals(74.3587, r.journey!!.points[0].lng, 1e-9)
+    }
+
+    @Test
+    fun directArray_latLon_parses() {
+        val json = """
+            [
+              {"lat": 31.5204, "lon": 74.3587, "timestampMs": "1710237600000"},
+              {"lat": 31.5300, "lon": 74.3600, "timestampMs": "1710238200000"}
+            ]
+        """.trimIndent()
+        val r = TimelineParser.parseText(json, "test.json")
+
+        assertNull(r.failureReason)
+        assertEquals(2, r.pointCount)
+    }
 }

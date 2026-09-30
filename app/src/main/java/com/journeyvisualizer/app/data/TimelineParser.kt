@@ -82,13 +82,24 @@ object TimelineParser {
                 }
                 text.startsWith("{") -> {
                     val root = JSONObject(text)
-                    formatName = "semantic"
-                    root.optJSONArray("semanticSegments")
-                        ?: return ParseResult(
-                            null, 0, 0,
-                            listOf("This JSON is not a Timeline export (no semanticSegments)."),
-                            failureReason = FailureReason.NOT_TIMELINE,
-                        )
+                    val semantic = root.optJSONArray("semanticSegments")
+                    if (semantic != null) {
+                        formatName = "semantic"
+                        semantic
+                    } else {
+                        // Classic Google Takeout "Location History" shape:
+                        // { "locations": [{ timestampMs, latitudeE7, longitudeE7, ... }] }.
+                        // Entries parse through the same direct-point path as
+                        // top-level arrays (timestampMs + E7 are already handled).
+                        val locations = root.optJSONArray("locations")
+                            ?: return ParseResult(
+                                null, 0, 0,
+                                listOf("This JSON is not a Timeline export (no semanticSegments or locations)."),
+                                failureReason = FailureReason.NOT_TIMELINE,
+                            )
+                        formatName = "locations"
+                        locations
+                    }
                 }
                 else -> return ParseResult(
                     null, 0, 0, listOf("This file is not a Timeline.json export."),
@@ -264,6 +275,14 @@ object TimelineParser {
                         val lat = obj.optDouble("latitude", Double.NaN)
                         val lng = obj.optDouble("longitude", Double.NaN)
                         if (valid(lat, lng)) return lat to lng
+                    }
+                    // Shorthand spellings used by some exports ("lat"/"lng", "lat"/"lon").
+                    for ((latKey, lngKey) in listOf("lat" to "lng", "lat" to "lon")) {
+                        if (obj.has(latKey) && obj.has(lngKey)) {
+                            val lat = obj.optDouble(latKey, Double.NaN)
+                            val lng = obj.optDouble(lngKey, Double.NaN)
+                            if (valid(lat, lng)) return lat to lng
+                        }
                     }
                     parseLatLngString(obj.optString("latLng", null))?.let { return it }
                 }

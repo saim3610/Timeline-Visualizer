@@ -432,7 +432,16 @@ class Phase1ViewModel : ViewModel() {
             val journey = result.journey
             if (journey == null || result.pointCount == 0) {
                 val reason = result.failureReason ?: FailureReason.NO_POINTS
-                fail(reason, reasonCopy(reason))
+                // Name what the file actually contained: a "no points" failure
+                // with 0 records means an empty export; with N records it means
+                // a format whose coordinates we did not understand.
+                val detail = buildString {
+                    append(reasonCopy(reason))
+                    if (result.recordCount > 0 && result.formatName.isNotEmpty()) {
+                        append(" (Found ${result.recordCount} records in '${result.formatName}' format.)")
+                    }
+                }
+                fail(reason, detail)
                 return
             }
 
